@@ -1,0 +1,1239 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pipeline Contract Manufacturer — Manaus 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f4f7fb;--bg2:#fff;--bg3:#edf2f9;--border:#d0dae8;--border2:#b8c9de;
+  --text:#0f1f35;--text2:#3a5068;--text3:#7a93ab;
+  --accent:#1a5fac;--accent-light:#e8f0fb;
+  --green:#16a34a;--green-bg:#f0fdf4;--amber:#b45309;--amber-bg:#fffbeb;
+  --red:#b91c1c;--red-bg:#fef2f2;
+  --smt:#1a5fac;--pth:#0e7a3e;--inj:#b45309;--pipe:#7c3aed;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:14px}
+
+/* HEADER */
+.header{background:var(--accent);padding:14px 32px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:0 2px 8px rgba(26,95,172,.25)}
+.header-left{display:flex;flex-direction:column;gap:2px}
+.header-title{font-family:'IBM Plex Mono',monospace;font-size:15px;font-weight:500;letter-spacing:.02em;color:#fff}
+.header-sub{font-size:11px;color:rgba(255,255,255,.65)}
+.header-tag{font-family:'IBM Plex Mono',monospace;font-size:11px;padding:4px 10px;border:1px solid rgba(255,255,255,.4);border-radius:4px;color:rgba(255,255,255,.9)}
+
+/* TABS */
+.tabs{background:var(--bg2);border-bottom:2px solid var(--border);padding:0 32px;display:flex;position:sticky;top:53px;z-index:190;box-shadow:0 1px 4px rgba(0,0,0,.05)}
+.tab{font-family:'IBM Plex Mono',monospace;font-size:12px;padding:12px 18px;cursor:pointer;color:var(--text3);border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .15s;white-space:nowrap;background:none;border-left:none;border-right:none;border-top:none}
+.tab:hover{color:var(--text2)}
+.tab.active{color:var(--accent);border-bottom-color:var(--accent);font-weight:500}
+.tab.active.t-smt{color:var(--smt);border-bottom-color:var(--smt)}
+.tab.active.t-pth{color:var(--pth);border-bottom-color:var(--pth)}
+.tab.active.t-inj{color:var(--inj);border-bottom-color:var(--inj)}
+.tab.active.t-pipe{color:var(--pipe);border-bottom-color:var(--pipe)}
+.tab-dot{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:6px;vertical-align:middle}
+.panel{display:none}.panel.active{display:block}
+
+/* ── VISÃO MACRO ── */
+.macro-wrap{padding:28px 32px;display:flex;flex-direction:column;gap:28px}
+.section-title{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.section-title::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* Pipeline hero KPIs */
+.pipe-hero{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.kpi{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:20px 22px;transition:box-shadow .15s;position:relative;overflow:hidden}
+.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.kpi.blue::before{background:var(--accent)}
+.kpi.green::before{background:var(--green)}
+.kpi.red::before{background:var(--red)}
+.kpi.amber::before{background:var(--amber)}
+.kpi:hover{box-shadow:0 4px 16px rgba(26,95,172,.1)}
+.kpi-label{font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--text3);margin-bottom:10px}
+.kpi-value{font-family:'IBM Plex Mono',monospace;font-size:28px;font-weight:500;line-height:1}
+.kpi-value.blue{color:var(--accent)}.kpi-value.green{color:var(--green)}.kpi-value.red{color:var(--red)}.kpi-value.amber{color:var(--amber)}
+.kpi-sub{font-size:11px;color:var(--text3);margin-top:6px;font-family:'IBM Plex Mono',monospace}
+
+/* Capacidade bloco */
+.cap-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.cap-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:18px 20px}
+.cap-card-title{font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.cap-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.cap-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.cap-row-label{font-size:11px;color:var(--text3)}
+.cap-row-val{font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:500;color:var(--text2)}
+.cap-row-val.red{color:var(--red)}.cap-row-val.green{color:var(--green)}.cap-row-val.amber{color:var(--amber)}
+.cap-gauge-bg{height:5px;background:var(--bg3);border-radius:3px;margin-top:10px}
+.cap-gauge-fill{height:5px;border-radius:3px}
+.cap-pct{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;text-align:right;margin-top:4px}
+
+/* ── DETAIL PANELS (SMT/PTH/INJ) ── */
+.view-toggle{display:flex;gap:6px;padding:14px 32px;background:var(--bg3);border-bottom:1px solid var(--border);align-items:center}
+.view-btn{font-family:'IBM Plex Mono',monospace;font-size:11px;padding:5px 14px;border-radius:20px;border:1px solid var(--border2);background:var(--bg2);color:var(--text3);cursor:pointer;transition:all .15s}
+.view-btn.active{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:500}
+.view-btn:hover:not(.active){border-color:var(--accent);color:var(--accent)}
+
+/* Seg card (resumo dentro das abas) */
+.seg-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin:24px 32px}
+.seg-card-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.seg-card-name{font-family:'IBM Plex Mono',monospace;font-size:14px;font-weight:500}
+.seg-card-desc{font-size:11px;color:var(--text3);margin-top:2px}
+.seg-card-body{padding:16px 20px;display:flex;flex-direction:column;gap:10px}
+.seg-row{display:flex;justify-content:space-between;align-items:center}
+.seg-row-label{font-size:11px;color:var(--text3)}
+.seg-row-val{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--text2);font-weight:500}
+.seg-row-val.red{color:var(--red)}.seg-row-val.amber{color:var(--amber)}.seg-row-val.green{color:var(--green)}
+.seg-divider{height:1px;background:var(--border);margin:4px 0}
+.seg-gauge-wrap{padding:0 20px 16px}
+.gauge-label{display:flex;justify-content:space-between;margin-bottom:6px}
+.gauge-label span{font-size:11px;color:var(--text3)}
+.gauge-label strong{font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600}
+.gauge-bg{height:7px;background:var(--bg3);border-radius:4px}
+.gauge-fill{height:7px;border-radius:4px}
+.seg-alert{margin:0 20px 16px;padding:8px 12px;border-radius:6px;font-size:11px;display:flex;align-items:center;gap:8px}
+.seg-alert.danger{background:var(--red-bg);border:1px solid #fecaca;color:var(--red)}
+.seg-alert.warn{background:var(--amber-bg);border:1px solid #fde68a;color:var(--amber)}
+.seg-alert.ok{background:var(--green-bg);border:1px solid #bbf7d0;color:var(--green)}
+
+/* Detail metrics bar */
+.detail-metrics{display:grid;grid-template-columns:repeat(5,1fr);border-bottom:1px solid var(--border);background:var(--bg2)}
+.dm{padding:14px 20px;border-right:1px solid var(--border)}
+.dm:last-child{border-right:none}
+.dm-label{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);margin-bottom:5px}
+.dm-val{font-family:'IBM Plex Mono',monospace;font-size:19px;font-weight:500;color:var(--text)}
+.dm-val.red{color:var(--red)}.dm-val.amber{color:var(--amber)}.dm-val.green{color:var(--green)}.dm-val.blue{color:var(--accent)}
+.dm-sub{font-size:10px;color:var(--text3);margin-top:2px;font-family:'IBM Plex Mono',monospace}
+
+/* Controls */
+.detail-controls{background:var(--bg3);border-bottom:1px solid var(--border);padding:10px 32px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.det-label{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text3)}
+select,input[type="text"]{font-family:'IBM Plex Sans',sans-serif;font-size:13px;padding:5px 10px;border-radius:6px;border:1px solid var(--border2);background:var(--bg2);color:var(--text);outline:none;cursor:pointer;transition:border-color .15s}
+select:focus,input:focus{border-color:var(--accent)}
+input::placeholder{color:var(--text3)}
+input[type="text"]{min-width:180px}
+select[multiple]{height:auto;min-height:36px;padding:4px 8px}
+.count-bar{padding:6px 32px;font-size:11px;color:var(--text3);font-family:'IBM Plex Mono',monospace;border-bottom:1px solid var(--border);background:var(--bg);display:flex;align-items:center;gap:6px}
+.count-num{color:var(--accent);font-weight:600}
+
+/* Buttons */
+.btn{font-family:'IBM Plex Mono',monospace;font-size:11px;padding:6px 14px;border-radius:6px;cursor:pointer;transition:all .15s}
+.btn-outline{border:1px solid var(--border2);background:var(--bg2);color:var(--text2)}
+.btn-outline:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+.btn-primary{border:none;background:var(--accent);color:#fff}
+.btn-primary:hover{background:#1548a0}
+.btn-danger{border:none;background:var(--red-bg);color:var(--red);border:1px solid #fecaca}
+.btn-danger:hover{background:var(--red);color:#fff}
+.btn-dashed{border:1.5px dashed var(--accent);background:transparent;color:var(--accent)}
+.btn-dashed:hover{background:var(--accent-light)}
+.btn-sm{padding:3px 10px;font-size:10px;border-radius:4px}
+
+/* Table */
+.table-wrap{padding:20px 32px;overflow-x:auto}
+table.dt{width:100%;border-collapse:collapse;font-size:13px}
+table.dt thead tr{background:var(--bg3)}
+table.dt th{padding:9px 12px;text-align:left;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);white-space:nowrap;cursor:pointer;user-select:none;border-bottom:2px solid var(--border);transition:color .15s}
+table.dt th:hover{color:var(--text2)}
+table.dt th.sorted{color:var(--accent)}
+table.dt th.r,table.dt td.r{text-align:right}
+table.dt td{padding:8px 12px;border-bottom:1px solid var(--border);vertical-align:middle;white-space:nowrap;color:var(--text)}
+table.dt td.r{font-family:'IBM Plex Mono',monospace;font-size:12px}
+table.dt tr:hover td{background:var(--accent-light)}
+.no-rows td{text-align:center;color:var(--text3);padding:40px;font-size:13px}
+.sort-arrow{margin-left:3px;opacity:.3;font-size:9px}
+th.sorted .sort-arrow{opacity:1}
+.linha-cell{font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;color:var(--accent)}
+.familia-cell{color:var(--text2)}
+.bar-wrap{display:flex;align-items:center;gap:8px;min-width:120px}
+.bar-bg{flex:1;height:4px;background:var(--bg3);border-radius:2px}
+.bar-fill{height:4px;border-radius:2px}
+.pct-badge{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;min-width:32px;text-align:right}
+
+/* Badges */
+.seg-badge{font-family:'IBM Plex Mono',monospace;font-size:10px;padding:3px 9px;border-radius:20px;font-weight:500}
+.badge-smt{background:#dbeafe;color:#1a5fac}.badge-pth{background:#dcfce7;color:#0e7a3e}
+.badge-inj{background:#fef3c7;color:#b45309}.badge-pipe{background:#ede9fe;color:#7c3aed}
+.stage-badge{display:inline-block;font-size:11px;font-weight:500;padding:3px 10px;border-radius:20px;white-space:nowrap}
+.stage-declined{background:#fef2f2;color:#b91c1c;border:1px solid #fecaca}
+.stage-negotiation{background:#eff6ff;color:#1a5fac;border:1px solid #bfdbfe}
+.stage-pre-go{background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0}
+.stage-0{background:#f5f3ff;color:#6d28d9;border:1px solid #ddd6fe}
+.stage-hold{background:#f1f5f9;color:#475569;border:1px solid #cbd5e1}
+.prob-badge{font-family:'IBM Plex Mono',monospace;font-size:11px;padding:2px 7px;border-radius:4px;background:var(--bg3);color:var(--text2)}
+.tag{display:inline-block;font-size:10px;padding:2px 7px;border-radius:4px;background:var(--bg3);color:var(--text3)}
+
+/* Edição inline */
+.editable-cell{cursor:pointer;position:relative}
+.editable-cell:hover{background:var(--accent-light)!important}
+.editable-cell:hover::after{content:'✎';position:absolute;right:3px;top:50%;transform:translateY(-50%);font-size:9px;color:var(--accent);opacity:.5}
+.inline-edit-input,.inline-edit-select{width:100%;min-width:70px;font-family:'IBM Plex Sans',sans-serif;font-size:12px;padding:3px 6px;border-radius:4px;border:1.5px solid var(--accent);background:#fff;color:var(--text);outline:none;box-shadow:0 0 0 3px rgba(26,95,172,.12)}
+.del-btn{background:none;border:none;color:var(--text3);cursor:pointer;font-size:11px;padding:2px 5px;border-radius:4px;transition:all .15s;line-height:1}
+.del-btn:hover{background:var(--red-bg);color:var(--red)}
+.del-col-btn{
+  opacity:0;background:none;border:1px solid transparent;color:var(--text3);
+  cursor:pointer;font-size:9px;padding:1px 4px;border-radius:3px;
+  margin-left:5px;line-height:1;vertical-align:middle;
+  transition:opacity .15s,background .15s,color .15s;
+}
+th:hover .del-col-btn{opacity:1}
+.del-col-btn:hover{background:var(--red-bg)!important;color:var(--red)!important;border-color:#fecaca!important}
+
+/* Multi-select tags */
+.multisel-wrap{position:relative;display:inline-block}
+.multisel-btn{font-family:'IBM Plex Mono',monospace;font-size:12px;padding:5px 10px;border-radius:6px;border:1px solid var(--border2);background:var(--bg2);color:var(--text);cursor:pointer;min-width:140px;text-align:left;display:flex;align-items:center;justify-content:space-between;gap:6px}
+.multisel-dropdown{display:none;position:absolute;top:calc(100% + 4px);left:0;min-width:180px;background:var(--bg2);border:1px solid var(--border2);border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.12);z-index:300;padding:6px}
+.multisel-dropdown.open{display:block}
+.multisel-option{display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:5px;cursor:pointer;font-size:12px;color:var(--text2)}
+.multisel-option:hover{background:var(--accent-light);color:var(--accent)}
+.multisel-option input[type="checkbox"]{accent-color:var(--accent);width:13px;height:13px;cursor:pointer}
+
+.undo-toast{
+  position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);
+  background:#1a5fac;color:#fff;font-family:'IBM Plex Mono',monospace;font-size:12px;
+  padding:10px 20px;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,.2);
+  display:flex;align-items:center;gap:12px;z-index:999;
+  transition:transform .25s cubic-bezier(.34,1.56,.64,1);pointer-events:none;
+}
+.undo-toast.show{transform:translateX(-50%) translateY(0);pointer-events:auto}
+.undo-toast-btn{background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.4);
+  color:#fff;font-family:'IBM Plex Mono',monospace;font-size:11px;padding:3px 10px;
+  border-radius:4px;cursor:pointer;transition:background .15s}
+.undo-toast-btn:hover{background:rgba(255,255,255,.35)}
+.undo-indicator{position:fixed;top:110px;right:24px;font-family:'IBM Plex Mono',monospace;
+  font-size:10px;color:var(--text3);background:var(--bg2);border:1px solid var(--border);
+  border-radius:6px;padding:4px 10px;z-index:190;opacity:0;transition:opacity .2s}
+.undo-indicator.visible{opacity:1}
+
+/* PERSISTÊNCIA / IMPORT / STATUS */
+.persist-bar{background:var(--bg2);border-bottom:1px solid var(--border);padding:6px 32px;display:flex;align-items:center;gap:16px;font-size:11px;color:var(--text3);font-family:'IBM Plex Mono',monospace}
+.persist-bar .saved-ok{color:var(--green);font-weight:500}
+.persist-bar .saved-warn{color:var(--amber);font-weight:500}
+.persist-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.persist-dot.green{background:var(--green)}
+.persist-dot.amber{background:var(--amber)}
+.persist-actions{display:flex;gap:8px;margin-left:auto}
+.persist-btn{font-family:'IBM Plex Mono',monospace;font-size:10px;padding:3px 10px;border-radius:4px;border:1px solid var(--border2);background:var(--bg);color:var(--text2);cursor:pointer;transition:all .15s}
+.persist-btn:hover{border-color:var(--accent);color:var(--accent)}
+.persist-btn.danger:hover{border-color:var(--red);color:var(--red)}
+
+/* NOTAS MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(15,31,53,.5);z-index:500;align-items:center;justify-content:center}
+.modal-overlay.open{display:flex}
+.modal{background:var(--bg2);border-radius:12px;padding:28px;width:520px;max-width:95vw;box-shadow:0 20px 60px rgba(0,0,0,.2);display:flex;flex-direction:column;gap:16px}
+.modal-title{font-family:'IBM Plex Mono',monospace;font-size:14px;font-weight:500;color:var(--text)}
+.modal-sub{font-size:12px;color:var(--text3);margin-top:-8px}
+.modal textarea{font-family:'IBM Plex Sans',sans-serif;font-size:13px;padding:10px 12px;border-radius:6px;border:1px solid var(--border2);background:var(--bg);color:var(--text);outline:none;resize:vertical;min-height:100px;width:100%;transition:border-color .15s}
+.modal textarea:focus{border-color:var(--accent)}
+.modal-footer{display:flex;justify-content:flex-end;gap:8px}
+.modal-log{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text3);background:var(--bg3);border-radius:6px;padding:10px;max-height:120px;overflow-y:auto;border:1px solid var(--border)}
+.modal-log-entry{padding:3px 0;border-bottom:1px solid var(--border);display:flex;gap:8px}
+.modal-log-entry:last-child{border-bottom:none}
+.log-time{color:var(--text3);flex-shrink:0}
+.log-action{color:var(--text2)}
+
+/* ALERTAS DE VALIDAÇÃO */
+.field-warn{outline:2px solid var(--amber)!important}
+.val-badge{display:inline-block;font-size:9px;padding:1px 5px;border-radius:3px;background:var(--amber-bg);color:var(--amber);font-family:'IBM Plex Mono',monospace;vertical-align:middle;margin-left:4px}
+
+/* SMT ALLOC ALERT */
+.alloc-alert{color:var(--red);font-weight:600}
+.alloc-ok{color:var(--green)}
+
+/* NOTA BOTÃO NA LINHA */
+.notes-btn{background:none;border:none;cursor:pointer;font-size:12px;color:var(--text3);padding:2px 4px;border-radius:3px;transition:all .15s;line-height:1}
+.notes-btn:hover{background:var(--accent-light);color:var(--accent)}
+.notes-btn.has-notes{color:var(--accent)}
+
+/* DADOS MANUFATURA EDITÁVEIS */
+.mfg-edit-hint{font-size:10px;color:var(--text3);font-family:'IBM Plex Mono',monospace;padding:6px 32px;background:var(--bg3);border-bottom:1px solid var(--border)}
+footer{padding:16px 32px;text-align:center;font-size:11px;color:var(--text3);border-top:1px solid var(--border);background:var(--bg2);font-family:'IBM Plex Mono',monospace}
+@media(max-width:900px){.pipe-hero,.cap-grid,.detail-metrics{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-left">
+    <div class="header-title">PIPELINE — CONTRACT MANUFACTURER</div>
+    <div class="header-sub">Capacidade · Manufatura · Manaus 2026</div>
+  </div>
+  <div class="header-tag">Grupo Multilaser</div>
+</header>
+
+<nav class="tabs">
+  <button class="tab active" data-tab="macro">◈ Visão Macro</button>
+  <button class="tab t-smt" data-tab="smt"><span class="tab-dot" style="background:#1a5fac"></span>SMT</button>
+  <button class="tab t-pth" data-tab="pth"><span class="tab-dot" style="background:#0e7a3e"></span>PTH / Teste</button>
+  <button class="tab t-inj" data-tab="inj"><span class="tab-dot" style="background:#b45309"></span>Injeção</button>
+  <button class="tab t-pipe" data-tab="pipe"><span class="tab-dot" style="background:#7c3aed"></span>Pipeline CM</button>
+</nav>
+
+<script>/* persist-bar injection */</script>
+<!-- ═══════════════════ VISÃO MACRO ═══════════════════ -->
+<div class="panel active" id="panel-macro">
+  <div class="macro-wrap">
+
+    <!-- Pipeline KPIs — FOCO PRINCIPAL -->
+    <div>
+      <div class="section-title">Pipeline Contract Manufacturer</div>
+      <div class="pipe-hero" id="macro-pipe-kpis"></div>
+    </div>
+
+    <!-- Capacidade — secundário -->
+    <div>
+      <div class="section-title">Capacidade Fabril</div>
+      <div class="cap-grid" id="macro-cap-cards"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════ SMT ═══════════════════ -->
+<div class="panel" id="panel-smt">
+  <div class="view-toggle">
+    <span class="det-label">Visualização</span>
+    <button class="view-btn active" onclick="setView('smt','resumo',this)">Resumo</button>
+    <button class="view-btn" onclick="setView('smt','completa',this)">Detalhado</button>
+  </div>
+  <div id="smt-resumo"></div>
+  <div id="smt-completa" style="display:none">
+    <div class="mfg-edit-hint">💡 Clique em qualquer valor numérico da tabela para editar — alterações são salvas automaticamente</div>
+<div class="detail-metrics" id="dm-smt"></div>
+    <div class="detail-controls">
+      <span class="det-label">Ocupação</span>
+      <select id="ocup-smt" onchange="renderDetail('smt')"><option value="all">Todas</option><option value="0">0% — Ocioso</option><option value="low">1–25%</option><option value="mid">26–50%</option><option value="high">&gt;50%</option></select>
+      <input type="text" id="search-smt" placeholder="Buscar linha, família..." oninput="renderDetail('smt')">
+      <button class="btn btn-outline" onclick="exportCSV('smt')">⬇ Exportar CSV</button>
+    </div>
+    <div class="count-bar"><span>Exibindo</span><span class="count-num" id="cnt-smt">—</span><span>linhas</span><span id="cnt-smt-of"></span></div>
+    <div class="table-wrap"><table class="dt"><thead><tr>
+      <th data-area="smt" data-col="linha">Linha <span class="sort-arrow">↕</span></th>
+      <th data-area="smt" data-col="familia">Família <span class="sort-arrow">↕</span></th>
+      <th data-area="smt" data-col="residual" class="r">Valor residual <span class="sort-arrow">↕</span></th>
+      <th data-area="smt" data-col="depMensal" class="r">Deprec. mensal <span class="sort-arrow">↕</span></th>
+      <th data-area="smt" data-col="capHR" class="r">Cap. (h) <span class="sort-arrow">↕</span></th>
+      <th data-area="smt" data-col="utilHR" class="r">Util. (h) <span class="sort-arrow">↕</span></th>
+      <th data-area="smt" data-col="pct">% Ocupação <span class="sort-arrow">↕</span></th>
+      <th data-area="smt" data-col="depOciosa" class="r">Deprec. ociosa <span class="sort-arrow">↕</span></th>
+    </tr></thead><tbody id="tbody-smt"></tbody></table></div>
+  </div>
+</div>
+
+<!-- ═══════════════════ PTH ═══════════════════ -->
+<div class="panel" id="panel-pth">
+  <div class="view-toggle">
+    <span class="det-label">Visualização</span>
+    <button class="view-btn active" onclick="setView('pth','resumo',this)">Resumo</button>
+    <button class="view-btn" onclick="setView('pth','completa',this)">Detalhado</button>
+  </div>
+  <div id="pth-resumo"></div>
+  <div id="pth-completa" style="display:none">
+    <div class="mfg-edit-hint">💡 Clique em qualquer valor numérico da tabela para editar — alterações são salvas automaticamente</div>
+<div class="detail-metrics" id="dm-pth"></div>
+    <div class="detail-controls">
+      <span class="det-label">Ocupação</span>
+      <select id="ocup-pth" onchange="renderDetail('pth')"><option value="all">Todas</option><option value="0">0% — Ocioso</option><option value="low">1–25%</option><option value="mid">26–50%</option><option value="high">&gt;50%</option></select>
+      <input type="text" id="search-pth" placeholder="Buscar família..." oninput="renderDetail('pth')">
+      <button class="btn btn-outline" onclick="exportCSV('pth')">⬇ Exportar CSV</button>
+    </div>
+    <div class="count-bar"><span>Exibindo</span><span class="count-num" id="cnt-pth">—</span><span>linhas</span><span id="cnt-pth-of"></span></div>
+    <div class="table-wrap"><table class="dt"><thead><tr>
+      <th data-area="pth" data-col="familia">Produto / Família <span class="sort-arrow">↕</span></th>
+      <th data-area="pth" data-col="residual" class="r">Valor residual <span class="sort-arrow">↕</span></th>
+      <th data-area="pth" data-col="depMensal" class="r">Deprec. mensal <span class="sort-arrow">↕</span></th>
+      <th data-area="pth" data-col="capHR" class="r">Cap. (h) <span class="sort-arrow">↕</span></th>
+      <th data-area="pth" data-col="utilHR" class="r">Util. (h) <span class="sort-arrow">↕</span></th>
+      <th data-area="pth" data-col="pct">% Ocupação <span class="sort-arrow">↕</span></th>
+      <th data-area="pth" data-col="depOciosa" class="r">Deprec. ociosa <span class="sort-arrow">↕</span></th>
+    </tr></thead><tbody id="tbody-pth"></tbody></table></div>
+  </div>
+</div>
+
+<!-- ═══════════════════ INJEÇÃO ═══════════════════ -->
+<div class="panel" id="panel-inj">
+  <div class="view-toggle">
+    <span class="det-label">Visualização</span>
+    <button class="view-btn active" onclick="setView('inj','resumo',this)">Resumo</button>
+    <button class="view-btn" onclick="setView('inj','completa',this)">Detalhado</button>
+  </div>
+  <div id="inj-resumo"></div>
+  <div id="inj-completa" style="display:none">
+    <div class="mfg-edit-hint">💡 Clique em qualquer valor numérico da tabela para editar — alterações são salvas automaticamente</div>
+<div class="detail-metrics" id="dm-inj"></div>
+    <div class="detail-controls">
+      <span class="det-label">Ocupação</span>
+      <select id="ocup-inj" onchange="renderDetail('inj')"><option value="all">Todas</option><option value="0">0% — Ocioso</option><option value="low">1–25%</option><option value="mid">26–50%</option><option value="high">&gt;50%</option></select>
+      <input type="text" id="search-inj" placeholder="Buscar máquina..." oninput="renderDetail('inj')">
+      <button class="btn btn-outline" onclick="exportCSV('inj')">⬇ Exportar CSV</button>
+    </div>
+    <div class="count-bar"><span>Exibindo</span><span class="count-num" id="cnt-inj">—</span><span>linhas</span><span id="cnt-inj-of"></span></div>
+    <div class="table-wrap"><table class="dt"><thead><tr>
+      <th data-area="inj" data-col="linha">Máquina <span class="sort-arrow">↕</span></th>
+      <th data-area="inj" data-col="familia">Identificação <span class="sort-arrow">↕</span></th>
+      <th data-area="inj" data-col="residual" class="r">Valor residual <span class="sort-arrow">↕</span></th>
+      <th data-area="inj" data-col="depMensal" class="r">Deprec. mensal <span class="sort-arrow">↕</span></th>
+      <th data-area="inj" data-col="capHR" class="r">Cap. (h) <span class="sort-arrow">↕</span></th>
+      <th data-area="inj" data-col="utilHR" class="r">Util. (h) <span class="sort-arrow">↕</span></th>
+      <th data-area="inj" data-col="pct">% Ocupação <span class="sort-arrow">↕</span></th>
+      <th data-area="inj" data-col="depOciosa" class="r">Deprec. ociosa <span class="sort-arrow">↕</span></th>
+    </tr></thead><tbody id="tbody-inj"></tbody></table></div>
+  </div>
+</div>
+
+<!-- ═══════════════════ PIPELINE CM ═══════════════════ -->
+<div class="panel" id="panel-pipe">
+  <div class="detail-metrics" id="dm-pipe"></div>
+  <div class="detail-controls">
+    <span class="det-label">Stage</span>
+    <div class="multisel-wrap">
+      <button class="multisel-btn" id="stage-btn" onclick="toggleMultiSel()">
+        <span id="stage-label">Todos</span><span>▾</span>
+      </button>
+      <div class="multisel-dropdown" id="stage-dropdown">
+        <label class="multisel-option"><input type="checkbox" value="all" id="ms-all" checked onchange="msToggleAll(this)"> Todos</label>
+        <label class="multisel-option"><input type="checkbox" value="Negotiation" class="ms-opt"> Negotiation</label>
+        <label class="multisel-option"><input type="checkbox" value="Pre- GO" class="ms-opt"> Pre-GO</label>
+        <label class="multisel-option"><input type="checkbox" value="0 Stage" class="ms-opt"> 0 Stage</label>
+        <label class="multisel-option"><input type="checkbox" value="On Hold" class="ms-opt"> On Hold</label>
+        <label class="multisel-option"><input type="checkbox" value="Declined" class="ms-opt"> Declined</label>
+      </div>
+    </div>
+    <span class="det-label">Factory</span>
+    <select id="pipe-factory" onchange="renderPipe()">
+      <option value="all">Todas</option>
+      <option value="CM A">CM A — Manaus</option>
+      <option value="CM B">CM B — Extrema</option>
+    </select>
+    <input type="text" id="search-pipe" placeholder="Buscar cliente, produto, ID..." oninput="renderPipe()">
+    <button class="btn btn-outline" onclick="exportPipeCSV()">⬇ Exportar CSV</button>
+    <button class="btn btn-primary" onclick="addPipeRow()">+ Nova linha</button>
+    <button class="btn btn-dashed" onclick="addPipeCol()">+ Nova coluna</button>
+  </div>
+  <div style="padding:5px 32px;font-size:11px;font-family:'IBM Plex Mono',monospace;border-bottom:1px solid var(--border);background:var(--bg3)" id="smt-alloc-bar"></div>
+<div style="display:none;padding:5px 32px;font-size:11px;font-family:'IBM Plex Mono',monospace;border-bottom:1px solid var(--border);background:var(--amber-bg);color:var(--amber);gap:8px;align-items:center" id="deals-warn-bar"></div>
+<div class="count-bar"><span>Exibindo</span><span class="count-num" id="cnt-pipe">—</span><span>oportunidades</span></div>
+  <div class="table-wrap" id="pipe-table-wrap">
+    <table class="dt" id="pipe-table">
+      <thead id="pipe-thead"></thead>
+      <tbody id="tbody-pipe"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- PERSISTÊNCIA BAR -->
+<div class="persist-bar" id="persist-bar">
+  <span class="persist-dot green" id="persist-dot"></span>
+  <span id="persist-status">Pronto</span>
+  <span>·</span>
+  <span id="persist-time">—</span>
+  <div class="persist-actions">
+    <button class="persist-btn" onclick="exportJSON()" title="Backup completo em JSON">⬇ Backup JSON</button>
+    <button class="persist-btn" onclick="document.getElementById('import-file').click()" title="Restaurar de backup">⬆ Importar</button>
+    <input type="file" id="import-file" accept=".json" style="display:none" onchange="importJSON(this)">
+    <button class="persist-btn danger" onclick="clearStorage()" title="Limpar dados salvos">✕ Limpar cache</button>
+  </div>
+</div>
+
+<!-- MODAL NOTAS -->
+<div class="modal-overlay" id="notes-modal">
+  <div class="modal">
+    <div>
+      <div class="modal-title" id="notes-modal-title">Notas</div>
+      <div class="modal-sub" id="notes-modal-sub"></div>
+    </div>
+    <textarea id="notes-textarea" placeholder="Adicione observações, contexto, próximos passos..."></textarea>
+    <div>
+      <div style="font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--text3);margin-bottom:6px">Histórico de alterações</div>
+      <div class="modal-log" id="notes-log"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeNotes()">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveNotes()">Salvar notas</button>
+    </div>
+  </div>
+</div>
+
+<div class="undo-toast" id="undo-toast">
+  <span id="undo-msg">Ação desfeita</span>
+  <button class="undo-toast-btn" onclick="undo()">↩ Ctrl+Z</button>
+</div>
+<div class="undo-indicator" id="undo-indicator">↩ histórico: <span id="undo-count">0</span></div>
+<footer>Grupo Multilaser · Engenharia &amp; Operações de Vendas · Contract Manufacturing · Manaus 2026</footer>
+
+<script>
+// ─── DADOS MANUFATURA ─────────────────────────────────────────
+const DATA={
+  smt:[
+    {linha:'LSMD01',familia:'TV',residual:9025326,depMensal:86860,capHR:596,utilHR:247,pct:41,depOciosa:50883},
+    {linha:'LSMD02',familia:'TV',residual:10475500,depMensal:127550,capHR:596,utilHR:0,pct:0,depOciosa:127550},
+    {linha:'LSMD03',familia:'NOTE + TV',residual:8458413,depMensal:94458,capHR:596,utilHR:268,pct:45,depOciosa:51955},
+    {linha:'LSMD04',familia:'NOTE + MONITOR',residual:6515907,depMensal:64192,capHR:596,utilHR:249,pct:42,depOciosa:37334},
+    {linha:'LSMD05',familia:'TV',residual:1153671,depMensal:13597,capHR:596,utilHR:0,pct:0,depOciosa:13597},
+    {linha:'LSMD06',familia:'SSD/DDR',residual:782054,depMensal:8035,capHR:596,utilHR:0,pct:0,depOciosa:8035},
+    {linha:'LSMD07',familia:'NOTE',residual:1271089,depMensal:14359,capHR:596,utilHR:0,pct:0,depOciosa:14359},
+    {linha:'LSMD08',familia:'TABLETS + REDES',residual:2892609,depMensal:25767,capHR:596,utilHR:259,pct:43,depOciosa:14590},
+    {linha:'LSMD09',familia:'TABLETS + REDES',residual:4978092,depMensal:46319,capHR:596,utilHR:259,pct:43,depOciosa:26227},
+    {linha:'LSMD10',familia:'REDES',residual:4832747,depMensal:50083,capHR:596,utilHR:0,pct:0,depOciosa:50083},
+    {linha:'LSMD11',familia:'REDES + SSD/DDR',residual:3685363,depMensal:35828,capHR:596,utilHR:132,pct:22,depOciosa:27904},
+    {linha:'LSMD12',familia:'OPPO',residual:3382317,depMensal:44793,capHR:596,utilHR:256,pct:43,depOciosa:25546},
+    {linha:'LSMD13',familia:'OPPO',residual:2650864,depMensal:20532,capHR:596,utilHR:256,pct:43,depOciosa:11710},
+  ],
+  pth:[
+    {linha:'PTH+TESTE',familia:'SSD & DDR',residual:774616,depMensal:9139,capHR:596,utilHR:91,pct:15,depOciosa:7743},
+    {linha:'PTH+TESTE',familia:'Tablets',residual:1084171,depMensal:14143,capHR:596,utilHR:182,pct:31,depOciosa:9824},
+    {linha:'PTH+TESTE',familia:'Audio e Video',residual:13698,depMensal:136,capHR:596,utilHR:0,pct:0,depOciosa:136},
+    {linha:'PTH+TESTE',familia:'OPPO',residual:4743914,depMensal:65001,capHR:596,utilHR:317,pct:53,depOciosa:30449},
+    {linha:'PTH+TESTE',familia:'Redes (ZTE)',residual:582039,depMensal:8047,capHR:596,utilHR:31,pct:5,depOciosa:7630},
+    {linha:'PTH+TESTE',familia:'Security',residual:206918,depMensal:2133,capHR:596,utilHR:0,pct:0,depOciosa:2133},
+    {linha:'PTH+TESTE',familia:'NOTE',residual:1742989,depMensal:24125,capHR:596,utilHR:332,pct:56,depOciosa:10691},
+    {linha:'PTH+TESTE',familia:'TV & Monitores',residual:7511162,depMensal:85681,capHR:596,utilHR:177,pct:30,depOciosa:60298},
+  ],
+  inj:[
+    {linha:'MI01',familia:'MÁQUINA 01',residual:1082366,depMensal:8324,capHR:484,utilHR:0,pct:0,depOciosa:8324},
+    {linha:'MI02',familia:'MÁQUINA 02',residual:975453,depMensal:7105,capHR:484,utilHR:0,pct:0,depOciosa:7105},
+    {linha:'MI03',familia:'MÁQUINA 03',residual:581688,depMensal:3642,capHR:484,utilHR:0,pct:0,depOciosa:3642},
+    {linha:'MI04',familia:'MÁQUINA 04',residual:1000453,depMensal:7371,capHR:484,utilHR:16,pct:3,depOciosa:7124},
+    {linha:'MI05',familia:'MÁQUINA 05',residual:581688,depMensal:3642,capHR:484,utilHR:133,pct:28,depOciosa:2640},
+    {linha:'MI06',familia:'MÁQUINA 06',residual:577201,depMensal:3592,capHR:484,utilHR:186,pct:38,depOciosa:2210},
+    {linha:'MI7', familia:'MÁQUINA 07',residual:830984,depMensal:6155,capHR:484,utilHR:0,pct:0,depOciosa:6155},
+    {linha:'MI08',familia:'MÁQUINA 08',residual:577201,depMensal:3592,capHR:484,utilHR:218,pct:45,depOciosa:1976},
+    {linha:'MI09',familia:'MÁQUINA 09',residual:577201,depMensal:3592,capHR:484,utilHR:218,pct:45,depOciosa:1976},
+    {linha:'MI10',familia:'MÁQUINA 10',residual:785207,depMensal:4864,capHR:484,utilHR:218,pct:45,depOciosa:2676},
+    {linha:'MI11',familia:'MÁQUINA 11',residual:856716,depMensal:6362,capHR:484,utilHR:0,pct:0,depOciosa:6362},
+    {linha:'MI12',familia:'MÁQUINA 12',residual:577201,depMensal:3592,capHR:484,utilHR:156,pct:32,depOciosa:2434},
+    {linha:'MI13',familia:'MÁQUINA 13',residual:785207,depMensal:4864,capHR:484,utilHR:117,pct:24,depOciosa:3692},
+    {linha:'MI14',familia:'MÁQUINA 14',residual:14138,depMensal:321,capHR:484,utilHR:130,pct:27,depOciosa:235},
+    {linha:'MI15',familia:'MÁQUINA 15',residual:14138,depMensal:321,capHR:484,utilHR:0,pct:0,depOciosa:321},
+  ]
+};
+
+// ─── PIPELINE ─────────────────────────────────────────────────
+const PIPE=[
+  {id:'CM-OPP-01',client:'Hisense',product:'WI FI board',bizType:'BTP (Build to Print)',factory:'CM A',stage:'Declined',prob:0.4,forecastMon:30000,revenueEst:46800000,profitEst:4212000,smtAlloc:1,bottleneck:'Price',owner:'Paulo Sardinha'},
+  {id:'CM-OPP-02',client:'Hisense – Friovix',product:'Arcon Acumulator board',bizType:'BTP (Build to Print)',factory:'CM A',stage:'Declined',prob:0.3,forecastMon:2000,revenueEst:4368000,profitEst:393120,smtAlloc:1,bottleneck:'Price',owner:'Paulo Sardinha'},
+  {id:'CM-OPP-03',client:'Samsung',product:'Notebook',bizType:'CM Only',factory:'CM B',stage:'Declined',prob:0.25,forecastMon:null,revenueEst:null,profitEst:null,smtAlloc:2,bottleneck:'Process Maturity',owner:'Paulo Sardinha'},
+  {id:'CM-OPP-04',client:'Elgin',product:'Placa Acumuladora - Arcon',bizType:'-',factory:'-',stage:'Declined',prob:0.65,forecastMon:75000,revenueEst:1875000,profitEst:168750,smtAlloc:1,bottleneck:'-',owner:'-'},
+  {id:'CM-OPP-05',client:'Quectel',product:'IOT PCBA',bizType:'BTP (Build to Print)',factory:'CM A',stage:'On Hold',prob:0.7,forecastMon:58000,revenueEst:126672000,profitEst:11400480,smtAlloc:1,bottleneck:'Price',owner:'Paulo Sardinha'},
+  {id:'CM-OPP-06',client:'Dell',product:'Notebook(3) & Desktop(2)',bizType:'BTP (Build to Print)',factory:'CM A',stage:'Pre- GO',prob:0.2,forecastMon:3000,revenueEst:null,profitEst:null,smtAlloc:1,bottleneck:'Quality System',owner:'Fabiano Favero'},
+  {id:'CM-OPP-07',client:'Pantum',product:'Printer Type C Laser',bizType:'CM Only',factory:'CM A',stage:'Pre- GO',prob:0.4,forecastMon:null,revenueEst:null,profitEst:null,smtAlloc:0,bottleneck:'-',owner:'Caio'},
+  {id:'CM-OPP-08',client:'New Land',product:'POS',bizType:'BTP (Build to Print)',factory:'CM A',stage:'Pre- GO',prob:0.2,forecastMon:110000,revenueEst:171600000,profitEst:15444000,smtAlloc:2,bottleneck:'-',owner:'Paulo Sardinha'},
+  {id:'CM-OPP-09',client:'Landi',product:'POS',bizType:'BTP (Build to Print)',factory:'CM A',stage:'Pre- GO',prob:0.6,forecastMon:80000,revenueEst:124800000,profitEst:11232000,smtAlloc:1,bottleneck:'-',owner:'Paulo Sardinha'},
+  {id:'CM-OPP-10',client:'New POS',product:'POS',bizType:'BTP (Build to Print)',factory:'CM A',stage:'Pre- GO',prob:0.2,forecastMon:110000,revenueEst:171600000,profitEst:15444000,smtAlloc:2,bottleneck:'-',owner:'Paulo Sardinha'},
+  {id:'CM-OPP-11',client:'Verifone',product:'POS',bizType:'BTP (Build to Print)',factory:'CM A',stage:'Pre- GO',prob:0.2,forecastMon:90000,revenueEst:140400000,profitEst:12636000,smtAlloc:2,bottleneck:'-',owner:'Paulo Sardinha'},
+];
+
+// Colunas padrão do pipeline
+let PIPE_COLS=[
+  {key:'id',label:'ID',type:'text'},
+  {key:'client',label:'Cliente',type:'text'},
+  {key:'product',label:'Produto',type:'text'},
+  {key:'bizType',label:'Tipo negócio',type:'select',opts:['BTP (Build to Print)','CM Only','Turnkey','Consignado','-']},
+  {key:'factory',label:'Factory',type:'select',opts:['CM A','CM B','-']},
+  {key:'stage',label:'Stage',type:'select',opts:['Declined','Negotiation','Pre- GO','0 Stage','On Hold']},
+  {key:'prob',label:'Prob.',type:'percent'},
+  {key:'forecastMon',label:'Forecast/Mês',type:'number'},
+  {key:'revenueEst',label:'Rev. Est. Anual',type:'number'},
+  {key:'profitEst',label:'Lucro Est.',type:'number'},
+  {key:'smtAlloc',label:'SMT Alloc.',type:'number'},
+  {key:'bottleneck',label:'Bottleneck',type:'text'},
+  {key:'owner',label:'Owner',type:'text'},
+];
+
+const META={
+  smt:{label:'SMT',desc:'Surface Mount Technology',color:'#1a5fac',badge:'badge-smt'},
+  pth:{label:'PTH / Teste',desc:'Through-Hole + Teste funcional',color:'#0e7a3e',badge:'badge-pth'},
+  inj:{label:'Injeção',desc:'Injetoras de plástico',color:'#b45309',badge:'badge-inj'},
+};
+const sortState={smt:{col:null,dir:1},pth:{col:null,dir:1},inj:{col:null,dir:1},pipe:{col:null,dir:1}};
+
+// ─── HELPERS ──────────────────────────────────────────────────
+const brl=n=>n==null?'TBC':'R$ '+Math.round(n).toLocaleString('pt-BR');
+const num=n=>n==null?'TBC':Math.round(n).toLocaleString('pt-BR');
+const M=n=>n==null?'TBC':(n/1e6).toFixed(1)+'M';
+const K=n=>Math.round(n/1000)+'K';
+
+function stats(rows){
+  const totCap=rows.reduce((s,r)=>s+r.capHR,0),totUtil=rows.reduce((s,r)=>s+r.utilHR,0);
+  const totResidual=rows.reduce((s,r)=>s+r.residual,0),totDep=rows.reduce((s,r)=>s+r.depMensal,0);
+  const totOciosa=rows.reduce((s,r)=>s+r.depOciosa,0),ociosas=rows.filter(r=>r.pct===0).length;
+  return{totCap,totUtil,totResidual,totDep,totOciosa,ociosas,avgPct:totCap>0?Math.round(totUtil/totCap*100):0,count:rows.length};
+}
+function bc(p){if(p===0)return'#ef4444';if(p<=25)return'#f59e0b';if(p<=50)return'#3b82f6';return'#16a34a';}
+
+function isActive(r){return r.stage!=='Declined'&&r.stage!=='On Hold';}
+function isLost(r){return r.stage==='Declined'||r.stage==='On Hold';}
+
+// ─── VISÃO MACRO ──────────────────────────────────────────────
+function renderMacro(){
+  // Pipeline KPIs
+  const active=PIPE.filter(isActive);
+  const lost=PIPE.filter(isLost);
+  const totalRevAtivo=active.reduce((s,r)=>s+(r.revenueEst||0),0);
+  const totalProfitAtivo=active.reduce((s,r)=>s+(r.profitEst||0),0);
+  const totalRevPerdida=lost.reduce((s,r)=>s+(r.revenueEst||0),0);
+
+  document.getElementById('macro-pipe-kpis').innerHTML=`
+    <div class="kpi blue">
+      <div class="kpi-label">Oportunidades ativas</div>
+      <div class="kpi-value blue">${active.length}</div>
+      <div class="kpi-sub">de ${PIPE.length} no pipeline total</div>
+    </div>
+    <div class="kpi red">
+      <div class="kpi-label">Oportunidades perdidas</div>
+      <div class="kpi-value red">${lost.length}</div>
+      <div class="kpi-sub">Declined + On Hold</div>
+    </div>
+    <div class="kpi green">
+      <div class="kpi-label">R$ Bruta no Pipeline</div>
+      <div class="kpi-value green">${M(totalRevAtivo)}</div>
+      <div class="kpi-sub">Receita estimada — ativos</div>
+    </div>
+    <div class="kpi red">
+      <div class="kpi-label">R$ Bruta perdida</div>
+      <div class="kpi-value red">${M(totalRevPerdida)}</div>
+      <div class="kpi-sub">Declined + On Hold</div>
+    </div>
+  `;
+
+  // Capacidade
+  const areas=[
+    {key:'smt',label:'SMT',color:'#1a5fac'},
+    {key:'pth',label:'PTH / Teste',color:'#0e7a3e'},
+    {key:'inj',label:'Injeção',color:'#b45309'},
+  ];
+  document.getElementById('macro-cap-cards').innerHTML=areas.map(a=>{
+    const s=stats(DATA[a.key]);
+    const disp=s.totCap-s.totUtil;
+    return`<div class="cap-card">
+      <div class="cap-card-title" style="color:${a.color}">
+        <span class="cap-dot" style="background:${a.color}"></span>${a.label}
+      </div>
+      <div class="cap-row"><span class="cap-row-label">Capacidade total</span><span class="cap-row-val">${num(s.totCap)} h</span></div>
+      <div class="cap-row"><span class="cap-row-label">Capacidade utilizada</span><span class="cap-row-val ${s.avgPct<25?'red':s.avgPct<50?'amber':'green'}">${num(s.totUtil)} h</span></div>
+      <div class="cap-row"><span class="cap-row-label">Capacidade disponível</span><span class="cap-row-val green">${num(disp)} h</span></div>
+      <div class="cap-row"><span class="cap-row-label">Deprec. ociosa/mês</span><span class="cap-row-val red">${brl(s.totOciosa)}</span></div>
+      <div class="cap-gauge-bg"><div class="cap-gauge-fill" style="width:${s.avgPct}%;background:${bc(s.avgPct)}"></div></div>
+      <div class="cap-pct" style="color:${bc(s.avgPct)}">${s.avgPct}% ocupado</div>
+    </div>`;
+  }).join('');
+}
+
+// ─── RESUMO SEGMENTO (dentro das abas) ────────────────────────
+function renderSegResumo(area){
+  const m=META[area],s=stats(DATA[area]);
+  const disp=s.totCap-s.totUtil;
+  const efic=s.totDep>0?Math.round((1-s.totOciosa/s.totDep)*100):0;
+  const al=s.ociosas===0?'ok':s.ociosas<=3?'warn':'danger';
+  document.getElementById(area+'-resumo').innerHTML=`
+    <div class="seg-card">
+      <div class="seg-card-header">
+        <div>
+          <div class="seg-card-name" style="color:${m.color}">${m.label}</div>
+          <div class="seg-card-desc">${m.desc}</div>
+        </div>
+        <span class="seg-badge ${m.badge}">${s.count} linhas</span>
+      </div>
+      <div class="seg-card-body">
+        <div class="seg-row"><span class="seg-row-label">Valor residual (imobilizado)</span><span class="seg-row-val">${M(s.totResidual)}</span></div>
+        <div class="seg-row"><span class="seg-row-label">Depreciação mensal total</span><span class="seg-row-val">${brl(s.totDep)}</span></div>
+        <div class="seg-divider"></div>
+        <div class="seg-row"><span class="seg-row-label">Capacidade total instalada</span><span class="seg-row-val">${num(s.totCap)} h/mês</span></div>
+        <div class="seg-row"><span class="seg-row-label">Capacidade utilizada</span><span class="seg-row-val ${s.totUtil===0?'red':''}">${num(s.totUtil)} h/mês</span></div>
+        <div class="seg-row"><span class="seg-row-label">Capacidade disponível</span><span class="seg-row-val green">${num(disp)} h/mês</span></div>
+        <div class="seg-divider"></div>
+        <div class="seg-row"><span class="seg-row-label">Depreciação ociosa/mês</span><span class="seg-row-val red">${brl(s.totOciosa)}</span></div>
+        <div class="seg-row"><span class="seg-row-label">Eficiência de depreciação</span><span class="seg-row-val ${efic>=75?'green':efic>=50?'amber':'red'}">${efic}%</span></div>
+        <div class="seg-row"><span class="seg-row-label">Linhas com 0% utilização</span><span class="seg-row-val ${s.ociosas>0?'red':'green'}">${s.ociosas}</span></div>
+      </div>
+      <div class="seg-gauge-wrap">
+        <div class="gauge-label"><span>Ocupação média</span><strong style="color:${bc(s.avgPct)}">${s.avgPct}%</strong></div>
+        <div class="gauge-bg"><div class="gauge-fill" style="width:${s.avgPct}%;background:${bc(s.avgPct)}"></div></div>
+      </div>
+      <div class="seg-alert ${al}">${al==='ok'?'✓':al==='warn'?'⚠':'✕'} ${s.ociosas===0?'Todas as linhas com utilização ativa':`${s.ociosas} linha${s.ociosas>1?'s':''} com 0% de utilização`}</div>
+    </div>`;
+}
+
+// ─── VIEW TOGGLE ──────────────────────────────────────────────
+function setView(area,view,btn){
+  document.getElementById(area+'-resumo').style.display=view==='resumo'?'block':'none';
+  document.getElementById(area+'-completa').style.display=view==='completa'?'block':'none';
+  const panel=document.getElementById('panel-'+area);
+  panel.querySelectorAll('.view-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  if(view==='completa') renderDetail(area);
+}
+
+// ─── DETAIL ───────────────────────────────────────────────────
+function filteredDetail(area){
+  const ocup=document.getElementById('ocup-'+area).value,
+        search=document.getElementById('search-'+area).value.toLowerCase(),
+        ss=sortState[area];
+  let rows=DATA[area].filter(r=>{
+    if(ocup==='0'&&r.pct!==0)return false;
+    if(ocup==='low'&&!(r.pct>=1&&r.pct<=25))return false;
+    if(ocup==='mid'&&!(r.pct>=26&&r.pct<=50))return false;
+    if(ocup==='high'&&r.pct<=50)return false;
+    if(search&&!r.linha.toLowerCase().includes(search)&&!r.familia.toLowerCase().includes(search))return false;
+    return true;
+  });
+  if(ss.col)rows=[...rows].sort((a,b)=>typeof a[ss.col]==='string'?ss.dir*a[ss.col].localeCompare(b[ss.col],'pt-BR'):ss.dir*(a[ss.col]-b[ss.col]));
+  return rows;
+}
+
+function renderDetail(area){
+  const rows=filteredDetail(area),s=stats(rows),total=DATA[area].length;
+  document.getElementById('dm-'+area).innerHTML=`
+    <div class="dm"><div class="dm-label">Linhas</div><div class="dm-val blue">${rows.length}</div><div class="dm-sub">de ${total} total</div></div>
+    <div class="dm"><div class="dm-label">Ocupação média</div><div class="dm-val ${s.avgPct<25?'red':s.avgPct<50?'amber':'green'}">${s.avgPct}%</div><div class="dm-sub">${num(s.totUtil)} / ${num(s.totCap)} h</div></div>
+    <div class="dm"><div class="dm-label">Ociosas (0%)</div><div class="dm-val ${s.ociosas>0?'red':'green'}">${s.ociosas}</div><div class="dm-sub">sem utilização</div></div>
+    <div class="dm"><div class="dm-label">Deprec. ociosa</div><div class="dm-val red">${K(s.totOciosa)}</div><div class="dm-sub">${brl(s.totOciosa)}</div></div>
+    <div class="dm"><div class="dm-label">Valor residual</div><div class="dm-val">${M(s.totResidual)}</div><div class="dm-sub">${brl(s.totResidual)}</div></div>`;
+  document.getElementById('cnt-'+area).textContent=rows.length;
+  document.getElementById('cnt-'+area+'-of').textContent=rows.length<total?` de ${total}`:'';
+  const isPth=(area==='pth'),tbody=document.getElementById('tbody-'+area);
+  if(!rows.length){tbody.innerHTML='<tr class="no-rows"><td colspan="8">Nenhum resultado.</td></tr>';return;}
+  tbody.innerHTML=rows.map(r=>{
+    const c=bc(r.pct),fc=isPth?`<td class="familia-cell">${r.familia}</td>`:`<td class="linha-cell">${r.linha}</td><td class="familia-cell">${r.familia}</td>`;
+    const ri=DATA[area].indexOf(r);
+    return`<tr>${fc}
+    <td class="r">${brl(r.residual)}</td>
+    <td class="r">${brl(r.depMensal)}</td>
+    <td class="r">${num(r.capHR)}</td>
+    <td class="r editable-cell" onclick="editMfg(this,'${area}',${ri},'utilHR')" title="Clique para editar horas utilizadas">${num(r.utilHR)}</td>
+    <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:${r.pct}%;background:${c}"></div></div><span class="pct-badge" style="color:${c}">${r.pct}%</span></div></td>
+    <td class="r" style="color:var(--red)">${brl(r.depOciosa)}</td></tr>`;
+  }).join('');
+}
+
+// ─── MULTI-SELECT STAGE ───────────────────────────────────────
+function toggleMultiSel(){
+  document.getElementById('stage-dropdown').classList.toggle('open');
+}
+document.addEventListener('click',e=>{
+  if(!e.target.closest('.multisel-wrap'))
+    document.getElementById('stage-dropdown').classList.remove('open');
+});
+function msToggleAll(cb){
+  document.querySelectorAll('.ms-opt').forEach(c=>c.checked=false);
+  cb.checked=true;
+  updateStageLabel();renderPipe();
+}
+document.querySelectorAll('.ms-opt').forEach(cb=>{
+  cb.addEventListener('change',()=>{
+    document.getElementById('ms-all').checked=false;
+    if([...document.querySelectorAll('.ms-opt')].every(c=>!c.checked)){
+      document.getElementById('ms-all').checked=true;
+    }
+    updateStageLabel();renderPipe();
+  });
+});
+function updateStageLabel(){
+  const sel=[...document.querySelectorAll('.ms-opt')].filter(c=>c.checked).map(c=>c.value);
+  document.getElementById('stage-label').textContent=sel.length===0?'Todos':sel.join(', ');
+}
+function getSelectedStages(){
+  if(document.getElementById('ms-all').checked)return null;// null = todos
+  return [...document.querySelectorAll('.ms-opt')].filter(c=>c.checked).map(c=>c.value);
+}
+
+// ─── PIPELINE ─────────────────────────────────────────────────
+function stageBadge(s){
+  const cls={Declined:'stage-declined',Negotiation:'stage-negotiation','Pre- GO':'stage-pre-go','0 Stage':'stage-0','On Hold':'stage-hold'}[s]||'stage-0';
+  return`<span class="stage-badge ${cls}">${s}</span>`;
+}
+
+function filteredPipe(){
+  const stages=getSelectedStages();
+  const factory=document.getElementById('pipe-factory').value;
+  const search=document.getElementById('search-pipe').value.toLowerCase();
+  const ss=sortState.pipe;
+  let rows=PIPE.filter(r=>{
+    if(stages&&!stages.includes(r.stage))return false;
+    if(factory!=='all'&&r.factory!==factory)return false;
+    if(search&&!r.client.toLowerCase().includes(search)&&!r.product.toLowerCase().includes(search)&&!r.id.toLowerCase().includes(search))return false;
+    return true;
+  });
+  if(ss.col)rows=[...rows].sort((a,b)=>{
+    let av=a[ss.col]??-Infinity,bv=b[ss.col]??-Infinity;
+    return typeof av==='string'?ss.dir*String(av).localeCompare(String(bv)):ss.dir*(av-bv);
+  });
+  return rows;
+}
+
+function renderPipeKPIs(){
+  const active=PIPE.filter(isActive),lost=PIPE.filter(isLost);
+  const totalRevAtivo=active.reduce((s,r)=>s+(r.revenueEst||0),0);
+  const totalProfitAtivo=active.reduce((s,r)=>s+(r.profitEst||0),0);
+  const totalRevPerdida=lost.reduce((s,r)=>s+(r.revenueEst||0),0);
+  document.getElementById('dm-pipe').innerHTML=`
+    <div class="dm"><div class="dm-label">Oportunidades ativas</div><div class="dm-val blue">${active.length}</div><div class="dm-sub">de ${PIPE.length} no pipeline</div></div>
+    <div class="dm"><div class="dm-label">Perdidas (Decl.+Hold)</div><div class="dm-val red">${lost.length}</div><div class="dm-sub">Declined + On Hold</div></div>
+    <div class="dm"><div class="dm-label">R$ Bruta — Ativas</div><div class="dm-val green">${M(totalRevAtivo)}</div><div class="dm-sub">receita est. total</div></div>
+    <div class="dm"><div class="dm-label">Lucro Est. — Ativas</div><div class="dm-val green">${M(totalProfitAtivo)}</div><div class="dm-sub">lucro est. total</div></div>
+    <div class="dm"><div class="dm-label">R$ Bruta perdida</div><div class="dm-val red">${M(totalRevPerdida)}</div><div class="dm-sub">Declined + On Hold</div></div>`;
+}
+
+// Colunas base que não podem ser excluídas
+const BASE_COLS=['id','client','stage']; // apenas essas 3 são protegidas
+
+function buildPipeHeader(){
+  document.getElementById('pipe-thead').innerHTML=`<tr>
+    ${PIPE_COLS.map(col=>{
+      const isR=['prob','forecastMon','revenueEst','profitEst','smtAlloc'].includes(col.key);
+      const canDel=!BASE_COLS.includes(col.key);
+      const delBtn=canDel?`<button class="del-col-btn" onclick="deleteCol('${col.key}',event)" title="Excluir coluna">✕</button>`:'';
+      return`<th data-area="pipe" data-col="${col.key}" class="${isR?'r':''}">${col.label} <span class="sort-arrow">↕</span>${delBtn}</th>`;
+    }).join('')}
+    <th style="width:40px;text-align:center" title="Notas">📝</th>
+    <th style="width:32px;text-align:center"></th>
+  </tr>`;
+  // Re-attach sort
+  document.querySelectorAll('#pipe-thead th[data-area="pipe"]').forEach(th=>{
+    th.addEventListener('click',()=>{
+      const col=th.dataset.col,ss=sortState.pipe;
+      if(ss.col===col)ss.dir*=-1;else{ss.col=col;ss.dir=1;}
+      document.querySelectorAll('#pipe-thead th').forEach(t=>{t.classList.remove('sorted');const sa=t.querySelector('.sort-arrow');if(sa)sa.textContent='↕';});
+      th.classList.add('sorted');th.querySelector('.sort-arrow').textContent=ss.dir===1?'↑':'↓';
+      renderPipe();
+    });
+  });
+}
+
+function renderPipe(){
+  renderPipeKPIs();
+  renderMacro();// sync macro
+  const rows=filteredPipe();
+  document.getElementById('cnt-pipe').textContent=rows.length;
+  const tbody=document.getElementById('tbody-pipe');
+  if(!rows.length){tbody.innerHTML=`<tr class="no-rows"><td colspan="${PIPE_COLS.length+1}">Nenhum resultado.</td></tr>`;return;}
+  tbody.innerHTML=rows.map(r=>{
+    const idx=PIPE.indexOf(r);
+    return`<tr data-idx="${idx}">${PIPE_COLS.map(col=>{
+      const v=r[col.key];
+      let display='';
+      if(col.type==='percent') display=`<span class="prob-badge">${v!=null?Math.round(v*100)+'%':'TBC'}</span>`;
+      else if(col.key==='stage') display=stageBadge(v||'-');
+      else if(col.key==='factory') display=`<span class="seg-badge ${v==='CM A'?'badge-smt':v==='CM B'?'badge-pth':'badge-pipe'}">${v||'-'}</span>`;
+      else if(col.key==='bizType') display=`<span class="tag">${v||'-'}</span>`;
+      else if(col.key==='bottleneck') display=v&&v!=='-'?`<span class="tag">${v}</span>`:'-';
+      else if(col.key==='id') display=`<span class="linha-cell">${v}</span>`;
+      else if(col.key==='client') display=`<span style="font-weight:500">${v||''}</span>`;
+      else if(col.key==='revenueEst') display=`<span style="font-weight:500">${v!=null?M(v):'TBC'}</span>`;
+      else if(col.key==='profitEst') display=`<span style="color:var(--green)">${v!=null?brl(v):'TBC'}</span>`;
+      else if(col.key==='forecastMon') display=v!=null?num(v):'TBC';
+      else display=v!=null?v:'-';
+      const isR=['prob','forecastMon','revenueEst','profitEst','smtAlloc'].includes(col.key);
+      return`<td class="${isR?'r ':''} editable-cell" data-col="${col.key}" title="Clique para editar">${display}</td>`;
+    }).join('')}
+    <td style="text-align:center">
+      <button class="notes-btn ${r.notes?'has-notes':''}" onclick="openNotes(${idx})" title="${r.notes?'Ver notas':'Adicionar notas'}">
+        ${r.notes?'📝':'○'}
+      </button>
+    </td>
+    <td style="text-align:center"><button class="del-btn" onclick="deleteRow(${idx})" title="Excluir">✕</button></td>
+    </tr>`;
+  }).join('');
+
+  // Edição inline
+  tbody.querySelectorAll('.editable-cell').forEach(td=>{
+    td.addEventListener('click',function(){
+      if(this.querySelector('input,select'))return;
+      const tr=this.closest('tr'),idx=+tr.dataset.idx,col=this.dataset.col;
+      const colDef=PIPE_COLS.find(c=>c.key===col);
+      if(!colDef)return;
+      const r=PIPE[idx],cur=r[col];
+      let input,saved=false;
+      if(colDef.type==='select'){
+        input=document.createElement('select');
+        input.className='inline-edit-select';
+        colDef.opts.forEach(o=>{const op=document.createElement('option');op.value=o;op.textContent=o;if(o===cur)op.selected=true;input.appendChild(op);});
+      } else if(colDef.type==='percent'){
+        input=document.createElement('input');input.type='number';input.min=0;input.max=100;input.step=5;
+        input.value=cur!=null?Math.round(cur*100):'';input.className='inline-edit-input';input.placeholder='%';
+      } else if(colDef.type==='number'){
+        input=document.createElement('input');input.type='number';input.min=0;
+        input.value=cur!=null?cur:'';input.className='inline-edit-input';
+      } else {
+        input=document.createElement('input');input.type='text';
+        input.value=cur!=null&&cur!=='-'?cur:'';input.className='inline-edit-input';
+      }
+      this.innerHTML='';this.appendChild(input);input.focus();if(input.select)input.select();
+      function save(){
+        if(saved)return;saved=true;
+        snapshot(`Editar ${col} — ${r.client||r.id}`);
+        let val=input.value.trim();
+        if(colDef.type==='percent') val=val===''?null:parseFloat(val)/100;
+        else if(colDef.type==='number') val=val===''?null:parseFloat(val);
+        else val=val===''?'-':val;
+        const oldVal=cur;
+        PIPE[idx][col]=val;
+        logChange(idx, `${col}: ${String(oldVal).substring(0,20)} → ${String(val).substring(0,20)}`);
+        scheduleSave();
+        renderPipe();
+      }
+      if(colDef.type==='select'){
+        input.addEventListener('change',save);
+        input.addEventListener('blur',()=>{if(!saved)save();});
+      } else {
+        input.addEventListener('blur',save);
+        input.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();save();}if(e.key==='Escape'){saved=true;PIPE[idx][col]=cur;renderPipe();}});
+      }
+    });
+  });
+}
+
+function deleteRow(idx){
+  if(!confirm(`Excluir "${PIPE[idx].client} — ${PIPE[idx].product}"?`))return;
+  snapshot(`Excluir linha ${PIPE[idx].id} — ${PIPE[idx].client}`);
+  PIPE.splice(idx,1);scheduleSave();renderPipe();
+}
+
+function addPipeRow(){
+  const next='CM-OPP-'+(PIPE.length+1).toString().padStart(2,'0');
+  const newRow={id:next,client:'Novo cliente',product:'Produto',bizType:'BTP (Build to Print)',factory:'CM A',stage:'0 Stage',prob:0.5,forecastMon:null,revenueEst:null,profitEst:null,smtAlloc:1,bottleneck:'-',owner:'Paulo Sardinha'};
+  PIPE_COLS.forEach(c=>{if(!(c.key in newRow))newRow[c.key]=c.type==='number'?null:'-';});
+  snapshot('Adicionar nova linha');
+  PIPE.push(newRow);scheduleSave();
+  renderPipe();
+  setTimeout(()=>{const t=document.getElementById('tbody-pipe');if(t.lastElementChild)t.lastElementChild.scrollIntoView({behavior:'smooth',block:'center'});},100);
+}
+
+function deleteCol(key, e){
+  e.stopPropagation(); // evita disparar sort
+  const col = PIPE_COLS.find(c=>c.key===key);
+  if(!col) return;
+  if(!confirm(`Excluir a coluna "${col.label}"? Os dados desta coluna serão removidos de todos os registros.`)) return;
+  snapshot(`Excluir coluna ${col.label}`);
+  PIPE_COLS = PIPE_COLS.filter(c=>c.key!==key);
+  PIPE.forEach(r=>delete r[key]);
+  scheduleSave();
+  buildPipeHeader();
+  renderPipe();
+}
+
+function addPipeCol(){
+  const name=prompt('Nome da nova coluna:');
+  if(!name||!name.trim())return;
+  const key='col_'+Date.now();
+  snapshot(`Adicionar coluna ${name.trim()}`);
+  PIPE_COLS.push({key,label:name.trim(),type:'text'});
+  PIPE.forEach(r=>r[key]='-');
+  scheduleSave();
+  buildPipeHeader();
+  renderPipe();
+}
+
+// ─── EDIÇÃO MANUFATURA ───────────────────────────────────────
+function editMfg(td, area, idx, field){
+  if(td.querySelector('input'))return;
+  const r=DATA[area][idx];
+  const cur=r[field];
+  const input=document.createElement('input');
+  input.type='number';input.min=0;input.className='inline-edit-input';
+  input.value=cur!=null?cur:'';input.style.width='80px';
+  td.innerHTML='';td.appendChild(input);input.focus();input.select();
+  let saved=false;
+  function save(){
+    if(saved)return;saved=true;
+    const val=parseFloat(input.value);
+    if(!isNaN(val)&&val>=0){
+      r[field]=val;
+      // Recalcular pct e depOciosa
+      if(field==='utilHR'||field==='capHR'){
+        r.pct=r.capHR>0?Math.round(r.utilHR/r.capHR*100):0;
+        r.depOciosa=Math.round(r.depMensal*(1-r.utilHR/r.capHR));
+      }
+      scheduleSave();
+      renderDetail(area);
+      renderSegResumo(area);
+      renderMacro();
+    } else {
+      renderDetail(area);
+    }
+  }
+  input.addEventListener('blur',save);
+  input.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();save();}if(e.key==='Escape'){saved=true;renderDetail(area);}});
+}
+
+// ─── SORT (manufatura) ────────────────────────────────────────
+['smt','pth','inj'].forEach(area=>{
+  document.querySelectorAll(`th[data-area="${area}"]`).forEach(th=>{
+    th.addEventListener('click',()=>{
+      const col=th.dataset.col,ss=sortState[area];
+      if(ss.col===col)ss.dir*=-1;else{ss.col=col;ss.dir=1;}
+      document.querySelectorAll(`th[data-area="${area}"]`).forEach(t=>{t.classList.remove('sorted');t.querySelector('.sort-arrow').textContent='↕';});
+      th.classList.add('sorted');th.querySelector('.sort-arrow').textContent=ss.dir===1?'↑':'↓';
+      renderDetail(area);
+    });
+  });
+});
+
+// ─── TABS ─────────────────────────────────────────────────────
+document.querySelectorAll('.tab').forEach(tab=>{
+  tab.addEventListener('click',()=>{
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('panel-'+tab.dataset.tab).classList.add('active');
+  });
+});
+
+// ─── CSV ──────────────────────────────────────────────────────
+function exportCSV(area){
+  const rows=filteredDetail(area);
+  const h=['Linha','Família','Valor Residual','Deprec. Mensal','Cap. h','Util. h','% Ocupação','Deprec. Ociosa'];
+  dlCSV([h,...rows.map(r=>[r.linha,r.familia,r.residual,r.depMensal,r.capHR,r.utilHR,r.pct+'%',r.depOciosa])],`capacidade_${area}_2026.csv`);
+}
+function exportPipeCSV(){
+  const rows=filteredPipe();
+  const h=PIPE_COLS.map(c=>c.label);
+  dlCSV([h,...rows.map(r=>PIPE_COLS.map(c=>{const v=r[c.key];return c.type==='percent'?(v!=null?Math.round(v*100)+'%':'TBC'):v??'TBC';}))], 'pipeline_cm_2026.csv');
+}
+function dlCSV(rows,name){
+  const a=document.createElement('a');
+  a.href='data:text/csv;charset=utf-8,\uFEFF'+encodeURIComponent(rows.map(r=>r.map(v=>`"${v}"`).join(',')).join('\n'));
+  a.download=name;a.click();
+}
+
+// ─── INIT ─────────────────────────────────────────────────────
+
+
+// ─── PERSISTÊNCIA LOCAL ───────────────────────────────────────
+const STORAGE_KEY = 'cm_pipeline_v1';
+
+function saveToStorage(){
+  try {
+    const payload = {
+      pipe: PIPE,
+      pipeCols: PIPE_COLS,
+      mfgData: DATA,
+      savedAt: new Date().toISOString(),
+    };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+    updatePersistBar('saved');
+  } catch(e){ updatePersistBar('error'); }
+}
+
+function loadFromStorage(){
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(!raw) return false;
+    const payload = JSON.parse(raw);
+    if(payload.pipe){
+      PIPE.length=0; payload.pipe.forEach(r=>PIPE.push(r));
+    }
+    if(payload.pipeCols){
+      PIPE_COLS.length=0; payload.pipeCols.forEach(c=>PIPE_COLS.push(c));
+    }
+    if(payload.mfgData){
+      ['smt','pth','inj'].forEach(k=>{
+        if(payload.mfgData[k]){ DATA[k].length=0; payload.mfgData[k].forEach(r=>DATA[k].push(r)); }
+      });
+    }
+    updatePersistBar('loaded', payload.savedAt);
+    return true;
+  } catch(e){ return false; }
+}
+
+function updatePersistBar(state, savedAt){
+  const dot=document.getElementById('persist-dot');
+  const status=document.getElementById('persist-status');
+  const time=document.getElementById('persist-time');
+  if(state==='saved'){
+    dot.className='persist-dot green';
+    status.innerHTML='<span class="saved-ok">Salvo automaticamente</span>';
+    const now=new Date();
+    time.textContent=now.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+  } else if(state==='loaded'){
+    dot.className='persist-dot green';
+    const d=savedAt?new Date(savedAt):new Date();
+    status.innerHTML='<span class="saved-ok">Dados restaurados</span>';
+    time.textContent='Salvo em: '+d.toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
+  } else if(state==='error'){
+    dot.className='persist-dot amber';
+    status.innerHTML='<span class="saved-warn">⚠ Falha ao salvar</span>';
+  } else {
+    dot.className='persist-dot green'; status.textContent='Pronto'; time.textContent='—';
+  }
+}
+
+function exportJSON(){
+  const payload={pipe:PIPE,pipeCols:PIPE_COLS,mfgData:DATA,exportedAt:new Date().toISOString()};
+  const a=document.createElement('a');
+  a.href='data:application/json;charset=utf-8,'+encodeURIComponent(JSON.stringify(payload,null,2));
+  a.download='pipeline_cm_backup_'+new Date().toISOString().slice(0,10)+'.json';
+  a.click();
+}
+
+function importJSON(input){
+  const file=input.files[0]; if(!file)return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    try {
+      const payload=JSON.parse(e.target.result);
+      if(!payload.pipe)throw new Error('Formato inválido');
+      snapshot('Antes da importação');
+      PIPE.length=0; payload.pipe.forEach(r=>PIPE.push(r));
+      if(payload.pipeCols){PIPE_COLS.length=0;payload.pipeCols.forEach(c=>PIPE_COLS.push(c));}
+      if(payload.mfgData){['smt','pth','inj'].forEach(k=>{if(payload.mfgData[k]){DATA[k].length=0;payload.mfgData[k].forEach(r=>DATA[k].push(r));}});}
+      buildPipeHeader(); renderPipe();
+      ['smt','pth','inj'].forEach(a=>renderSegResumo(a));
+      renderMacro();
+      saveToStorage();
+      showToast('Importação concluída — '+payload.pipe.length+' deals carregados');
+    } catch(err){ alert('Erro ao importar: '+err.message); }
+  };
+  reader.readAsText(file);
+  input.value='';
+}
+
+function clearStorage(){
+  if(!confirm('Limpar todos os dados salvos localmente? Os dados voltarão ao estado original.'))return;
+  localStorage.removeItem(STORAGE_KEY);
+  location.reload();
+}
+
+// Auto-save com debounce — salva 1.5s após última alteração
+let autoSaveTimer=null;
+function scheduleSave(){
+  clearTimeout(autoSaveTimer);
+  autoSaveTimer=setTimeout(saveToStorage, 1500);
+}
+
+// ─── NOTAS & CHANGELOG ────────────────────────────────────────
+let notesTargetIdx=null;
+
+function openNotes(idx){
+  notesTargetIdx=idx;
+  const r=PIPE[idx];
+  document.getElementById('notes-modal-title').textContent='Notas — '+r.client;
+  document.getElementById('notes-modal-sub').textContent=r.product+' · '+r.id;
+  document.getElementById('notes-textarea').value=r.notes||'';
+  // Changelog
+  const log=r.changelog||[];
+  const logEl=document.getElementById('notes-log');
+  if(log.length===0){
+    logEl.innerHTML='<div style="color:var(--text3);font-size:11px;padding:4px">Nenhuma alteração registrada ainda.</div>';
+  } else {
+    logEl.innerHTML=log.slice().reverse().map(entry=>`
+      <div class="modal-log-entry">
+        <span class="log-time">${entry.time}</span>
+        <span class="log-action">${entry.action}</span>
+      </div>`).join('');
+  }
+  document.getElementById('notes-modal').classList.add('open');
+  setTimeout(()=>document.getElementById('notes-textarea').focus(),100);
+}
+
+function closeNotes(){
+  document.getElementById('notes-modal').classList.remove('open');
+  notesTargetIdx=null;
+}
+
+function saveNotes(){
+  if(notesTargetIdx===null)return;
+  const txt=document.getElementById('notes-textarea').value.trim();
+  PIPE[notesTargetIdx].notes=txt||'';
+  closeNotes();
+  scheduleSave();
+  renderPipe();
+}
+
+// Fechar modal clicando fora
+document.getElementById('notes-modal').addEventListener('click',function(e){
+  if(e.target===this)closeNotes();
+});
+
+// ─── CHANGELOG AUTOMÁTICO ────────────────────────────────────
+function logChange(idx, action){
+  if(!PIPE[idx])return;
+  if(!PIPE[idx].changelog)PIPE[idx].changelog=[];
+  const now=new Date().toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
+  PIPE[idx].changelog.push({time:now, action});
+  if(PIPE[idx].changelog.length>50)PIPE[idx].changelog.shift();
+}
+
+// ─── VALIDAÇÃO DE DEALS ───────────────────────────────────────
+function validateDeal(r){
+  const warns=[];
+  if(!r.revenueEst) warns.push('Receita estimada não preenchida');
+  if(!r.owner||r.owner==='-') warns.push('Owner não definido');
+  if(r.prob===null||r.prob===undefined) warns.push('Probabilidade não definida');
+  return warns;
+}
+
+// ─── CRUZAMENTO SMT ALLOC vs CAPACIDADE ───────────────────────
+function smtAllocStatus(){
+  // Capacidade SMT disponível em horas
+  const smtStats = DATA.smt.reduce((acc,r)=>({cap:acc.cap+r.capHR,util:acc.util+r.utilHR}),{cap:0,util:0});
+  const dispHoras = smtStats.cap - smtStats.util;
+  // Linhas SMT (cada alloc = 1 linha = 596h/mês)
+  const HRS_PER_LINE = 596;
+  const activeAlloc = PIPE.filter(r=>!isLost(r)).reduce((s,r)=>s+(r.smtAlloc||0),0);
+  return {dispHoras, activeAlloc, linhasDisp: Math.floor(dispHoras/HRS_PER_LINE)};
+}
+
+// ─── UNDO SYSTEM ──────────────────────────────────────────────
+const HISTORY=[];
+const MAX_HISTORY=30;
+let toastTimer=null;
+
+function snapshot(description){
+  HISTORY.push({
+    description,
+    pipe: JSON.parse(JSON.stringify(PIPE)),
+    cols: JSON.parse(JSON.stringify(PIPE_COLS)),
+  });
+  if(HISTORY.length>MAX_HISTORY) HISTORY.shift();
+  updateUndoIndicator();
+}
+
+function undo(){
+  if(!HISTORY.length) return;
+  const state=HISTORY.pop();
+  // Restore
+  PIPE.length=0;
+  state.pipe.forEach(r=>PIPE.push(r));
+  PIPE_COLS.length=0;
+  state.cols.forEach(c=>PIPE_COLS.push(c));
+  buildPipeHeader();
+  renderPipe();
+  showToast('Desfeito: '+state.description);
+  updateUndoIndicator();
+}
+
+function showToast(msg){
+  const t=document.getElementById('undo-toast');
+  document.getElementById('undo-msg').textContent=msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.classList.remove('show'),3000);
+}
+
+function updateUndoIndicator(){
+  const el=document.getElementById('undo-indicator');
+  const cnt=document.getElementById('undo-count');
+  cnt.textContent=HISTORY.length;
+  el.classList.toggle('visible',HISTORY.length>0);
+}
+
+document.addEventListener('keydown',e=>{
+  if((e.ctrlKey||e.metaKey)&&e.key==='z'){
+    e.preventDefault();
+    if(HISTORY.length) undo();
+    else showToast('Nenhuma ação para desfazer');
+  }
+});
+
+// Carregar dados salvos (se existirem)
+const hadSaved = loadFromStorage();
+
+renderMacro();
+['smt','pth','inj'].forEach(a=>renderSegResumo(a));
+buildPipeHeader();
+renderPipe();
+
+if(!hadSaved) updatePersistBar('ready');
+</script>
+</body>
+</html>
